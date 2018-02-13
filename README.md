@@ -7,6 +7,4 @@ This script uses the health check mechanism provided since Docker 1.12. If your 
 
 This script can be useful, as example, in Continuous Integration or other situations when you just want to wait until a stack is deployed before performing other actions.
 
-<aside class="notice">
-Please note this script does not do anything about dependencies startup order.
-</aside>
+*Please note this script does not do anything about dependencies startup order.*
