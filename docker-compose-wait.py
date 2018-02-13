@@ -4,6 +4,7 @@ import subprocess
 import re
 import time
 import sys
+import argparse
 
 def call(args):
     return '\n'.join(subprocess.check_output(args).decode().splitlines())
@@ -44,8 +45,15 @@ def convert_status(s):
 def get_converted_statuses(args):
     return dict([(k, convert_status(v)) for k, v in get_statuses(args).items()])
 
+parser = argparse.ArgumentParser(
+    description='Wait until all services in a docker-compose file are healthy. Options are forwarded to docker-compose.',
+    usage='wait.py [options]'
+    )
+
+args, unknown = parser.parse_known_args()
+
 while True:
-    statuses = get_converted_statuses(sys.argv[1:])
+    statuses = get_converted_statuses(unknown)
     result = True
     for k, v in statuses.items():
         if v is None:
