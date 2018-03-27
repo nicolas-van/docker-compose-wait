@@ -25,7 +25,7 @@ def get_statuses(args):
     return statuses
 
 def convert_status(s):
-    res = re.search(r"^([^\s]+)[^\(]*(?:\((.*)\))?$", s)
+    res = re.search(r"^([^\s]+)[^\(]*(?:\((.*)\).*)?$", s)
     if res is None:
         raise Exception("Unknown status format %s" % s)
     if res[1] == "Up":
