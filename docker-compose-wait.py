@@ -47,7 +47,7 @@ def get_converted_statuses(args):
 
 parser = argparse.ArgumentParser(
     description='Wait until all services in a docker-compose file are healthy. Options are forwarded to docker-compose.',
-    usage='wait.py [options]'
+    usage='docker-compose-wait.py [options]'
     )
 
 args, unknown = parser.parse_known_args()

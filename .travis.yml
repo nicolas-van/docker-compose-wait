@@ -1,5 +1,10 @@
-  language: python
-  python:
-    - "3.6"
-  script:
-    - python -m py_compile docker-compose-wait.py
+language: python
+python:
+  - "3.6"
+install:
+  - git clone --branch v0.4.0 https://github.com/sstephenson/bats.git
+script:
+  - python -m py_compile docker-compose-wait.py
+sudo: required
+services:
+  - docker
