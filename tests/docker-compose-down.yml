@@ -1,0 +1,9 @@
+version: '3'
+services:
+  test:
+    image: alpine:latest
+    command: sh -c "exit 1"
+    healthcheck:
+      test: sh -c "true"
+      interval: 1s
+      
