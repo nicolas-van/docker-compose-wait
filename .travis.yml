@@ -5,6 +5,7 @@ install:
   - git clone --branch v0.4.0 https://github.com/sstephenson/bats.git
 script:
   - python -m py_compile docker-compose-wait.py
+  - ./bats/bin/bats tests.bats
 sudo: required
 services:
   - docker
