@@ -1,5 +1,3 @@
-#!/usr/bin/env bats
-
 @test "simple" {
   dc=tests/docker-compose-simple.yml
   docker-compose -f $dc up -d
