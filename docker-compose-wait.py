@@ -28,14 +28,14 @@ def convert_status(s):
     res = re.search(r"^([^\s]+)[^\(]*(?:\((.*)\).*)?$", s)
     if res is None:
         raise Exception("Unknown status format %s" % s)
-    if res[1] == "Up":
-        if res[2] == "health: starting":
+    if res.group(1) == "Up":
+        if res.group(2) == "health: starting":
             return None
-        elif res[2] == "healthy":
+        elif res.group(2) == "healthy":
             return True
-        elif res[2] == "unhealthy":
+        elif res.group(2) == "unhealthy":
             return False
-        elif res[2] is None:
+        elif res.group(2) is None:
             return True
         else:
             raise Exception("Unknown status format %s" % s)
