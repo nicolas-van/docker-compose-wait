@@ -8,6 +8,8 @@ python:
   - "3.6-dev"
   - "3.7-dev"
   - "pypy3.5"
+env:
+  - DOCKER_COMPOSE_VERSION=1.6.2
 install:
   - git clone --branch v0.4.0 https://github.com/sstephenson/bats.git
 script:
