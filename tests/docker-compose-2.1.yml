@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  test:
+    image: alpine:latest
+    command: sh -c "sleep 60"
+    healthcheck:
+      test: sh -c "true"
+      interval: 1s
