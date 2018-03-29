@@ -29,3 +29,11 @@
   [ "$status" -eq 255 ]
   docker-compose -f $dc down
 }
+
+@test "2.1" {
+  dc=tests/docker-compose-2.1.yml
+  docker-compose -f $dc up -d
+  run ./docker-compose-wait.py -f $dc
+  [ "$status" -eq 0 ]
+  docker-compose -f $dc down
+}
