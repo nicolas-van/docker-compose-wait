@@ -193,4 +193,6 @@ setup(
         #'Say Thanks!': 'http://saythanks.io/to/example',
         'Source': 'https://github.com/nicolas-van/docker-compose-wait',
     },
+
+    python_requires='>=3.3',
 )
