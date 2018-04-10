@@ -1,8 +1,9 @@
 @test "simple" {
   dc=tests/docker-compose-simple.yml
   docker-compose -f $dc up -d
-  run ./docker_compose_wait.py -f $dc
-  [ "$status" -eq 0 ]
+  #run ./docker_compose_wait.py -f $dc
+  #[ "$status" -eq 0 ]
+  ./docker_compose_wait.py -f $dc
   docker-compose -f $dc down
 }
 
