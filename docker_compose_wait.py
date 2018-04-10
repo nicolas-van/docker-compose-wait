@@ -67,10 +67,10 @@ def main():
                 result = False
                 break
 
-        if v:
+        if result:
             print("All processes up and running")
             exit(0)
-        elif v is False:
+        elif result is False:
             print("Some processes failed")
             exit(-1)
 
