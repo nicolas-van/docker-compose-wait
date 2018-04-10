@@ -45,31 +45,37 @@ def convert_status(s):
 def get_converted_statuses(args):
     return dict([(k, convert_status(v)) for k, v in get_statuses(args).items()])
 
-parser = argparse.ArgumentParser(
-    description='Wait until all services in a docker-compose file are healthy. Options are forwarded to docker-compose.',
-    usage='docker-compose-wait.py [options]'
-    )
 
-args, unknown = parser.parse_known_args()
+def main():
+    parser = argparse.ArgumentParser(
+        description='Wait until all services in a docker-compose file are healthy. Options are forwarded to docker-compose.',
+        usage='docker-compose-wait.py [options]'
+        )
 
-while True:
-    statuses = get_converted_statuses(unknown)
-    result = True
-    for k, v in statuses.items():
-        if v is None:
-            result = None
-            break
-        elif v:
-            continue
-        else: # not v
-            result = False
-            break
+    args, unknown = parser.parse_known_args()
 
-    if v:
-        print("All processes up and running")
-        exit(0)
-    elif v is False:
-        print("Some processes failed")
-        exit(-1)
+    while True:
+        statuses = get_converted_statuses(unknown)
+        result = True
+        for k, v in statuses.items():
+            if v is None:
+                result = None
+                break
+            elif v:
+                continue
+            else: # not v
+                result = False
+                break
 
-    time.sleep(1)
+        if v:
+            print("All processes up and running")
+            exit(0)
+        elif v is False:
+            print("Some processes failed")
+            exit(-1)
+
+        time.sleep(1)
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    main()
