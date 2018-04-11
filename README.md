@@ -9,4 +9,34 @@ This script uses the health check mechanism provided since Docker 1.12. If your 
 
 This script can be useful, as example, in Continuous Integration or other situations when you just want to wait until a stack is deployed before performing other actions.
 
-*Please note this script does not do anything about dependencies startup order.*
+*Please note this script does not do anything about dependencies startup order. See the [official documentation](https://docs.docker.com/compose/startup-order/) for that problem.*
+
+## Installation
+
+```
+pip install docker-compose-wait
+```
+
+This utility requires Python >= 3.3.
+
+## Usage
+
+It can be as simple as:
+
+```
+docker-compose-wait
+```
+
+`docker-compose-wait` behaves like a `docker-compose command`. It will just forward any option to `docker-compose`. The above command will work fine if you previously ran `docker-compose up -d` by referencing the standard `docker-compose.yml` file. If you are using other files for your `docker-compose` configuration just use:
+
+```
+docker-compose-wait -f <path_to_yaml_file>
+```
+
+## License
+
+[See the license file](./LICENSE.md).
+
+## Contribution
+
+[See the contribution guide](./CONTRIBUTING.md).
