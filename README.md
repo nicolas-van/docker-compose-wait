@@ -35,8 +35,8 @@ docker-compose-wait -f <path_to_yaml_file>
 
 ## License
 
-[See the license file](./LICENSE.md).
+[See the license file](https://github.com/nicolas-van/docker-compose-wait/blob/master/LICENSE.md).
 
 ## Contribution
 
-[See the contribution guide](./CONTRIBUTING.md).
+[See the contribution guide](https://github.com/nicolas-van/docker-compose-wait/blob/master/CONTRIBUTING.md).
