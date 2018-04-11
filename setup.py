@@ -4,6 +4,8 @@ https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 """
 
+from __future__ import division, absolute_import, print_function, unicode_literals
+
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # To use a consistent encoding
@@ -104,6 +106,8 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
@@ -194,5 +198,5 @@ setup(
         'Source': 'https://github.com/nicolas-van/docker-compose-wait',
     },
 
-    python_requires='>=3.3',
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, >=3.3',
 )

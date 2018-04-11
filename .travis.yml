@@ -1,5 +1,6 @@
 language: python
 python:
+  - "2.7"
   - "3.3"
   - "3.6"
 env:
@@ -20,7 +21,7 @@ services:
 jobs:
   include:
     - stage: deploy
-      python: "3.6"
+      python: "2.7"
       env:
         - DOCKER_COMPOSE_VERSION=1.20.0
       script:
