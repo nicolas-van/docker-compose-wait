@@ -11,12 +11,12 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 install:
-- git clone --branch v0.4.0 https://github.com/sstephenson/bats.git
+  - git clone --branch v0.4.0 https://github.com/sstephenson/bats.git
 script:
-- "./bats/bin/bats tests.bats"
+  - "./bats/bin/bats tests.bats"
 sudo: required
 services:
-- docker
+  - docker
 deploy:
   provider: pypi
   user: nicolasvan
