@@ -1,2 +1,4 @@
 __pycache__
 bats
+dist
+*.egg-info
