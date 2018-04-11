@@ -27,7 +27,7 @@ It can be as simple as:
 docker-compose-wait
 ```
 
-`docker-compose-wait` behaves like a `docker-compose command`. It will just forward any option to `docker-compose`. The above command will work fine if you previously ran `docker-compose up -d` by referencing the standard `docker-compose.yml` file. If you are using other files for your `docker-compose` configuration just use:
+`docker-compose-wait` behaves like a `docker-compose` command. It will just forward any option to `docker-compose`. The above command will work fine if you previously ran `docker-compose up -d` by referencing the standard `docker-compose.yml` file. If you are using other files for your `docker-compose` configuration just use:
 
 ```
 docker-compose-wait -f <path_to_yaml_file>
