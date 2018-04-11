@@ -33,7 +33,7 @@
 @test "2.1" {
   dc=tests/docker-compose-2.1.yml
   docker-compose -f $dc up -d
-  run python3 ./docker-compose-wait.py -f $dc
+  run python3 ./docker_compose_wait.py -f $dc
   [ "$status" -eq 0 ]
   docker-compose -f $dc down
 }
