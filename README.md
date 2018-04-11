@@ -17,7 +17,7 @@ This script can be useful, as example, in Continuous Integration or other situat
 pip install docker-compose-wait
 ```
 
-This utility requires Python >= 3.3.
+This utility requires Python 2.7 and Python >= 3.3.
 
 ## Usage
 
