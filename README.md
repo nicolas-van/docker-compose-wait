@@ -1,7 +1,9 @@
 
 # docker-compose-wait
 
-[![Build Status](https://travis-ci.org/nicolas-van/docker-compose-wait.svg?branch=master)](https://travis-ci.org/nicolas-van/docker-compose-wait)
+[![Build Status](https://travis-ci.org/nicolas-van/docker-compose-wait.svg?branch=master)](https://travis-ci.org/nicolas-van/docker-compose-wait) 
+[![PyPI](https://img.shields.io/pypi/v/docker-compose-wait.svg)](https://github.com/nicolas-van/docker-compose-wait)
+
 
 Some useful script to wait until all services declared in a docker-compose file are up and running.
 
