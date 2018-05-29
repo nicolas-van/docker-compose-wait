@@ -21,7 +21,7 @@ services:
 jobs:
   include:
     - stage: deploy
-      python: "2.7"
+      python: "3.6"
       env:
         - DOCKER_COMPOSE_VERSION=1.20.0
       script:
