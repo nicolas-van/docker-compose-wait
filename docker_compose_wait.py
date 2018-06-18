@@ -47,17 +47,29 @@ def convert_status(s):
 def get_converted_statuses(args):
     return dict([(k, convert_status(v)) for k, v in get_statuses(args).items()])
 
+def get_docker_compose_args(args):
+    nargs = []
+    for f in args.file:
+        nargs += ['-f', f]
+    if args.project_name:
+        nargs += ['-p', args.project_name]
+    return nargs
 
 def main():
     parser = argparse.ArgumentParser(
         description='Wait until all services in a docker-compose file are healthy. Options are forwarded to docker-compose.',
         usage='docker-compose-wait.py [options]'
         )
+    parser.add_argument('-f', '--file', action='append', default=[],
+                    help='Specify an alternate compose file (default: docker-compose.yml)')
+    parser.add_argument('-p', '--project-name',
+                    help='Specify an alternate project name (default: directory name)')
 
-    args, unknown = parser.parse_known_args()
+    args = parser.parse_args()
+    dc_args = get_docker_compose_args(args)
 
     while True:
-        statuses = get_converted_statuses(unknown)
+        statuses = get_converted_statuses(dc_args)
         result = True
         for k, v in statuses.items():
             if v is None:
