@@ -1,0 +1,16 @@
+version: '3'
+services:
+  test1:
+    image: alpine:latest
+    command: sh -c "sleep 60"
+    healthcheck:
+      test: sh -c "false"
+      interval: 1s
+      retries: 5
+  test2:
+    image: alpine:latest
+    command: sh -c "sleep 60"
+    healthcheck:
+      test: sh -c "false"
+      interval: 1s
+      retries: 10

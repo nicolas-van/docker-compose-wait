@@ -1,7 +1,7 @@
 
 # docker-compose-wait
 
-[![Build Status](https://travis-ci.org/nicolas-van/docker-compose-wait.svg?branch=master)](https://travis-ci.org/nicolas-van/docker-compose-wait) 
+[![Build Status](https://travis-ci.org/nicolas-van/docker-compose-wait.svg?branch=master)](https://travis-ci.org/nicolas-van/docker-compose-wait)
 [![PyPI](https://img.shields.io/pypi/v/docker-compose-wait.svg)](https://pypi.org/project/docker-compose-wait/)
 
 
@@ -19,17 +19,35 @@ This script can be useful, as example, in Continuous Integration or other situat
 pip install docker-compose-wait
 ```
 
-This utility requires Python 2.7 or Python >= 3.3.
+This utility requires Python 2.7 or Python >= 3.3. It also supports `docker-compose` from version 1.10.
 
 ## Usage
 
-It can be as simple as:
+```
+usage: docker-compose-wait.py [options]
+
+Wait until all services in a docker-compose file are healthy. Options are
+forwarded to docker-compose.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FILE, --file FILE  Specify an alternate compose file (default: docker-
+                        compose.yml)
+  -p PROJECT_NAME, --project-name PROJECT_NAME
+                        Specify an alternate project name (default: directory
+                        name)
+  -w, --wait            Wait for all the processes to stabilize before exit
+                        (default behavior is to exit as soon as any of the
+                        processes is unhealthy)
+```
+
+Basically it can be as simple as:
 
 ```
 docker-compose-wait
 ```
 
-`docker-compose-wait` behaves like a `docker-compose` sub-command. It will just forward any option to `docker-compose`. The above command will work fine if you previously ran `docker-compose up -d` by referencing the standard `docker-compose.yml` file. If you are using other files for your `docker-compose` configuration just use:
+`docker-compose-wait` behaves like a `docker-compose` sub-command. It will forward the usual `docker-compose` command-line arguments. The above command will work fine if you previously ran `docker-compose up -d` by referencing the standard `docker-compose.yml` file. If you are using other files for your `docker-compose` configuration just use:
 
 ```
 docker-compose-wait -f <path_to_yaml_file> -f <path_to_other_yaml_file> ...

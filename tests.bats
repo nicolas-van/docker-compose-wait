@@ -37,3 +37,23 @@
   [ "$status" -eq 0 ]
   docker-compose -f $dc down
 }
+
+@test "no wait" {
+  dc=tests/docker-compose-wait.yml
+  docker-compose -f $dc up -d
+  run python ./docker_compose_wait.py -f $dc
+  [ "$status" -eq -1 ]
+  [ "$output" =~ .*test1.* ]
+  [ ! "$output" =~ .*test2.* ]
+  docker-compose -f $dc down
+}
+
+@test "wait" {
+  dc=tests/docker-compose-wait.yml
+  docker-compose -f $dc up -d
+  run python ./docker_compose_wait.py -f $dc -w
+  [ "$status" -eq -1 ]
+  [ "$output" =~ .*test1.* ]
+  [ "$output" =~ .*test2.* ]
+  docker-compose -f $dc down
+}
