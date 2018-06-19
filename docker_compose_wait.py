@@ -7,13 +7,16 @@ import re
 import time
 import sys
 import argparse
+import yaml
 
 def call(args):
     return '\n'.join(subprocess.check_output(args).decode().splitlines())
 
-def get_statuses(args):
-    ids = call(["docker-compose"] + args + ["ps", "-q"]).splitlines()
-    status_list = [tuple(x.split(",")) for x in call(["docker", "ps", "--all", "--format", "{{.ID}},{{.Status}}"]).splitlines()]
+def get_all_statuses():
+    return [tuple(x.split(",")) for x in call(["docker", "ps", "--all", "--format", "{{.ID}},{{.Status}}"]).splitlines()]
+
+def get_statuses_for_ids(ids):
+    status_list = get_all_statuses()
     statuses = {}
     for id in ids:
         status = None
@@ -32,20 +35,20 @@ def convert_status(s):
         raise Exception("Unknown status format %s" % s)
     if res.group(1) == "Up":
         if res.group(2) == "health: starting":
-            return None
+            return "starting"
         elif res.group(2) == "healthy":
-            return True
+            return "healthy"
         elif res.group(2) == "unhealthy":
-            return False
+            return "unhealthy"
         elif res.group(2) is None:
-            return True
+            return "up"
         else:
             raise Exception("Unknown status format %s" % s)
     else:
-        return False
+        return "down"
 
-def get_converted_statuses(args):
-    return dict([(k, convert_status(v)) for k, v in get_statuses(args).items()])
+def get_converted_statuses(ids):
+    return dict([(k, convert_status(v)) for k, v in get_statuses_for_ids(ids).items()])
 
 def get_docker_compose_args(args):
     nargs = []
@@ -54,6 +57,16 @@ def get_docker_compose_args(args):
     if args.project_name:
         nargs += ['-p', args.project_name]
     return nargs
+
+def get_services_ids(dc_args):
+    services_names = yaml.load(call(["docker-compose"] + dc_args + ["config"]))["services"].keys()
+    services = {}
+    for name in services_names:
+        id = call(["docker-compose"] + dc_args + ["ps", '-q', name]).strip()
+        if id == '':
+            continue
+        services[name] = id
+    return services
 
 def main():
     parser = argparse.ArgumentParser(
@@ -68,16 +81,18 @@ def main():
     args = parser.parse_args()
     dc_args = get_docker_compose_args(args)
 
+    services_ids = get_services_ids(dc_args)
+
     while True:
-        statuses = get_converted_statuses(dc_args)
+        statuses = get_converted_statuses(services_ids.values())
         result = True
         for k, v in statuses.items():
-            if v is None:
+            if v == "starting":
                 result = None
                 break
-            elif v:
+            elif v in set(['healthy', 'up']):
                 continue
-            else: # not v
+            else: # v in set(['unhealthy', 'down'])
                 result = False
                 break
 
