@@ -81,20 +81,32 @@ def main():
                     help='Specify an alternate compose file (default: docker-compose.yml)')
     parser.add_argument('-p', '--project-name',
                     help='Specify an alternate project name (default: directory name)')
+    parser.add_argument('-w', '--wait', action='store_true',
+                    help='Wait for all the processes to stabilize before exit (default behavior is to exit '
+                    + 'as soon as any of the processes is unhealthy)')
 
     args = parser.parse_args()
     dc_args = get_docker_compose_args(args)
 
     services_ids = get_services_ids(dc_args)
 
+    up_statuses = set(['healthy', 'up'])
+    down_statuses = set(['down', 'unhealthy', 'removed'])
+    stabilized_statuses = up_statuses | down_statuses
+
     while True:
         statuses = get_services_statuses(services_ids)
-        if all([v in set(['healthy', 'up']) for k, v in statuses.items()]):
+
+        if args.wait:
+            if any([v not in stabilized_statuses for k, v in statuses.items()]):
+                continue
+
+        if all([v in up_statuses for k, v in statuses.items()]):
             print("All processes up and running")
             exit(0)
-        elif any([v in set(['down', 'unhealthy', 'removed']) for k, v in statuses.items()]):
+        elif any([v in down_statuses for k, v in statuses.items()]):
             print("Some processes failed:")
-            for k, v in [(k, v) for k, v in statuses.items() if v in set(['down', 'unhealthy', 'removed'])]:
+            for k, v in [(k, v) for k, v in statuses.items() if v in down_statuses]:
                 print("%s is %s" % (k, v))
             exit(-1)
 
