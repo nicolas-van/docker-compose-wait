@@ -25,7 +25,7 @@ def get_statuses_for_ids(ids):
                 status = s[1]
                 break
         if status is None:
-            raise Exception("Could not find status for container id %s" % id)
+            status = "removed"
         statuses[id] = status
     return statuses
 
@@ -68,6 +68,10 @@ def get_services_ids(dc_args):
         services[name] = id
     return services
 
+def get_services_statuses(services_with_ids):
+    statuses_by_id = get_converted_statuses(services_with_ids.values())
+    return dict([(k, statuses_by_id[v]) for k, v in services_with_ids.items()])
+
 def main():
     parser = argparse.ArgumentParser(
         description='Wait until all services in a docker-compose file are healthy. Options are forwarded to docker-compose.',
@@ -84,23 +88,14 @@ def main():
     services_ids = get_services_ids(dc_args)
 
     while True:
-        statuses = get_converted_statuses(services_ids.values())
-        result = True
-        for k, v in statuses.items():
-            if v == "starting":
-                result = None
-                break
-            elif v in set(['healthy', 'up']):
-                continue
-            else: # v in set(['unhealthy', 'down'])
-                result = False
-                break
-
-        if result:
+        statuses = get_services_statuses(services_ids)
+        if all([v in set(['healthy', 'up']) for k, v in statuses.items()]):
             print("All processes up and running")
             exit(0)
-        elif result is False:
-            print("Some processes failed")
+        elif any([v in set(['down', 'unhealthy', 'removed']) for k, v in statuses.items()]):
+            print("Some processes failed:")
+            for k, v in [(k, v) for k, v in statuses.items() if v in set(['down', 'unhealthy', 'removed'])]:
+                print("%s is %s" % (k, v))
             exit(-1)
 
         time.sleep(1)
