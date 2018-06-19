@@ -43,8 +43,8 @@
   docker-compose -f $dc up -d
   run python ./docker_compose_wait.py -f $dc
   [ "$status" -eq 255 ]
-  [ "$output" =~ .*test1.* ]
-  [ ! "$output" =~ .*test2.* ]
+  [ "$output" = *test1* ]
+  [ ! "$output" = *test2* ]
   docker-compose -f $dc down
 }
 
@@ -53,7 +53,7 @@
   docker-compose -f $dc up -d
   run python ./docker_compose_wait.py -f $dc -w
   [ "$status" -eq 255 ]
-  [ "$output" =~ .*test1.* ]
-  [ "$output" =~ .*test2.* ]
+  [ "$output" = *test1* ]
+  [ "$output" = *test2* ]
   docker-compose -f $dc down
 }
