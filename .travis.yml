@@ -12,6 +12,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 install:
+  - pip install -r requirements.txt
   - git clone --branch v0.4.0 https://github.com/sstephenson/bats.git
 script:
   - "./bats/bin/bats tests.bats"
