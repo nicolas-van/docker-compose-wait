@@ -8,7 +8,7 @@ import time
 import sys
 import argparse
 import yaml
-from .timeparse import timeparse
+from timeparse import timeparse
 
 def call(args):
     return '\n'.join(subprocess.check_output(args).decode().splitlines())
