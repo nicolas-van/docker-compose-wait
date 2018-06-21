@@ -84,9 +84,14 @@ def main():
     parser.add_argument('-w', '--wait', action='store_true',
                     help='Wait for all the processes to stabilize before exit (default behavior is to exit '
                     + 'as soon as any of the processes is unhealthy)')
+    parser.add_argument('-t', '--timeout', type=int, default=None,
+                    help='Max amount of seconds during which this command will run. If there is a '
+                    + 'timeout this command will exit returning 1. (default: wait for an infinite amount of time)')
 
     args = parser.parse_args()
     dc_args = get_docker_compose_args(args)
+
+    start_time = time.time()
 
     services_ids = get_services_ids(dc_args)
 
@@ -109,6 +114,10 @@ def main():
             for k, v in [(k, v) for k, v in statuses.items() if v in down_statuses]:
                 print("%s is %s" % (k, v))
             exit(-1)
+
+        if args.timeout is not None and time.time() > start_time + args.timeout:
+            print("Timeout")
+            exit(1)
 
         time.sleep(1)
 

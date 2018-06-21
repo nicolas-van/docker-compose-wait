@@ -57,3 +57,11 @@
   [[ "$output" = *test2* ]]
   docker-compose -f $dc down
 }
+
+@test "timeout" {
+  dc=tests/docker-compose-timeout.yml
+  docker-compose -f $dc up -d
+  run python ./docker_compose_wait.py -f $dc -t 2
+  [ "$status" -eq 1 ]
+  docker-compose -f $dc down
+}
