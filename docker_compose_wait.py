@@ -94,6 +94,7 @@ def main():
     dc_args = get_docker_compose_args(args)
 
     start_time = time.time()
+    timeout = timeparse(args.timeout) if args.timeout is not None else None
 
     services_ids = get_services_ids(dc_args)
 
@@ -117,7 +118,7 @@ def main():
                 print("%s is %s" % (k, v))
             exit(-1)
 
-        if args.timeout is not None and time.time() > start_time + timeparse(args.timeout):
+        if args.timeout is not None and time.time() > start_time + timeout:
             print("Timeout")
             exit(1)
 
