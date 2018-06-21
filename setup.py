@@ -126,7 +126,7 @@ setup(
     # the `py_modules` argument instead as follows, which will expect a file
     # called `my_module.py` to exist:
     #
-    py_modules=["docker_compose_wait"],
+    py_modules=["docker_compose_wait", "timeparse"],
     #
     #packages=find_packages(exclude=['contrib', 'docs', 'tests']),  # Required
 

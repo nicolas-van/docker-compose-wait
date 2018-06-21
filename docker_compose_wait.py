@@ -8,6 +8,7 @@ import time
 import sys
 import argparse
 import yaml
+from .timeparse import timeparse
 
 def call(args):
     return '\n'.join(subprocess.check_output(args).decode().splitlines())
@@ -84,8 +85,9 @@ def main():
     parser.add_argument('-w', '--wait', action='store_true',
                     help='Wait for all the processes to stabilize before exit (default behavior is to exit '
                     + 'as soon as any of the processes is unhealthy)')
-    parser.add_argument('-t', '--timeout', type=int, default=None,
-                    help='Max amount of seconds during which this command will run. If there is a '
+    parser.add_argument('-t', '--timeout', default=None,
+                    help='Max amount of time during which this command will run (expressed using the '
+                    + 'same format than in docker-compose.yml files, example: 5s, 10m,... ). If there is a '
                     + 'timeout this command will exit returning 1. (default: wait for an infinite amount of time)')
 
     args = parser.parse_args()
@@ -115,7 +117,7 @@ def main():
                 print("%s is %s" % (k, v))
             exit(-1)
 
-        if args.timeout is not None and time.time() > start_time + args.timeout:
+        if args.timeout is not None and time.time() > start_time + timeparse(args.timeout):
             print("Timeout")
             exit(1)
 
