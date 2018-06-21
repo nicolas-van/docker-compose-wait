@@ -39,6 +39,12 @@ optional arguments:
   -w, --wait            Wait for all the processes to stabilize before exit
                         (default behavior is to exit as soon as any of the
                         processes is unhealthy)
+  -t TIMEOUT, --timeout TIMEOUT
+                        Max amount of time during which this command will run
+                        (expressed using the same format than in docker-
+                        compose.yml files, example: 5s, 10m,... ). If there is
+                        a timeout this command will exit returning 1.
+                        (default: wait for an infinite amount of time)
 ```
 
 Basically it can be as simple as:
