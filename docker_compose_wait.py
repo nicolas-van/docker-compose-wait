@@ -60,7 +60,7 @@ def get_docker_compose_args(args):
     return nargs
 
 def get_services_ids(dc_args):
-    services_names = yaml.load(call(["docker-compose"] + dc_args + ["config"]))["services"].keys()
+    services_names = yaml.safe_load(call(["docker-compose"] + dc_args + ["config"]))["services"].keys()
     services = {}
     for name in services_names:
         id = call(["docker-compose"] + dc_args + ["ps", '-q', name]).strip()
