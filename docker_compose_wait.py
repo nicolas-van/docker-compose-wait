@@ -71,7 +71,11 @@ def get_services_ids(dc_args):
 
 def get_services_statuses(services_with_ids):
     statuses_by_id = get_converted_statuses(services_with_ids.values())
-    return dict([(k, statuses_by_id[v]) for k, v in services_with_ids.items()])
+    return list([({'name': k, 'id': v}, statuses_by_id[v]) for k, v in services_with_ids.items()])
+
+def print_healthcheck_log_for_service_id(service_id):
+    print(subprocess.check_output(["docker", "inspect", "--format", "\"{{json .State.Health }}\"", service_id]))
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -89,6 +93,8 @@ def main():
                     help='Max amount of time during which this command will run (expressed using the '
                     + 'same format than in docker-compose.yml files, example: 5s, 10m,... ). If there is a '
                     + 'timeout this command will exit returning 1. (default: wait for an infinite amount of time)')
+    parser.add_argument('-l', '--log-print', action='store_true',
+                    help='Whether to print docker healthcheck output for unhealthy services')
 
     args = parser.parse_args()
     dc_args = get_docker_compose_args(args)
@@ -106,16 +112,20 @@ def main():
         statuses = get_services_statuses(services_ids)
 
         if args.wait:
-            if any([v not in stabilized_statuses for k, v in statuses.items()]):
+            if any([v not in stabilized_statuses for k, v in statuses]):
                 continue
 
-        if all([v in up_statuses for k, v in statuses.items()]):
+        if all([v in up_statuses for k, v in statuses]):
             print("All processes up and running")
             exit(0)
-        elif any([v in down_statuses for k, v in statuses.items()]):
+        elif any([v in down_statuses for k, v in statuses]):
             print("Some processes failed:")
-            for k, v in [(k, v) for k, v in statuses.items() if v in down_statuses]:
-                print("%s is %s" % (k, v))
+            for k, v in [(k, v) for k, v in statuses if v in down_statuses]:
+                print("%s is %s" % (k['name'], v))
+
+                if args.log_print:
+                    print_healthcheck_log_for_service_id(k['id'])
+
             exit(-1)
 
         if args.timeout is not None and time.time() > start_time + timeout:

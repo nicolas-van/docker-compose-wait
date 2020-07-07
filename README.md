@@ -59,6 +59,15 @@ docker-compose-wait
 docker-compose-wait -f <path_to_yaml_file> -f <path_to_other_yaml_file> ...
 ```
 
+## Running tests
+
+```
+python -m pip install -r requirements.txt # install dependencies
+brew install bats-core # install test runner
+
+bats tests.bats # run tests
+```
+
 ## License
 
 [See the license file](https://github.com/nicolas-van/docker-compose-wait/blob/master/LICENSE.md).
