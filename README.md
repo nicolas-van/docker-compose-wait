@@ -19,7 +19,7 @@ This script can be useful, as example, in Continuous Integration or other situat
 pip install docker-compose-wait
 ```
 
-This utility requires Python 2.7 or Python >= 3.3. It also supports `docker-compose` from version 1.10.
+This utility requires Python 2.7 or Python >= 3.5. It also supports `docker-compose` from version 1.10.
 
 ## Usage
 
